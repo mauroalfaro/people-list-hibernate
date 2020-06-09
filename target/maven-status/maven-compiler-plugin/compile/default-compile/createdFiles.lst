@@ -1,0 +1,14 @@
+com\alfarosoft\peoplelist\controller\EmployeeController.class
+com\alfarosoft\peoplelist\service\CustomerService.class
+com\alfarosoft\peoplelist\exception\PeopleListException.class
+com\alfarosoft\peoplelist\service\EmployeeService.class
+com\alfarosoft\peoplelist\controller\CustomerController.class
+com\alfarosoft\peoplelist\model\Customer.class
+com\alfarosoft\peoplelist\model\Employee.class
+com\alfarosoft\peoplelist\controller\StoreController.class
+com\alfarosoft\peoplelist\model\Store.class
+com\alfarosoft\peoplelist\configuration\PeopleListConfiguration.class
+com\alfarosoft\peoplelist\PeopleListApp.class
+com\alfarosoft\peoplelist\service\StoreService.class
+com\alfarosoft\peoplelist\database\HibernateSessionFactory.class
+com\alfarosoft\peoplelist\validation\AddressValidation.class
