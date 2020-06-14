@@ -19,14 +19,14 @@ public class PeopleListConfiguration {
 
     @Bean
     @RequestScope
-    public EmployeeService employeeService(){
-        return new EmployeeService();
+    public EmployeeService employeeService() throws Exception {
+        return new EmployeeService(hibernateSessionFactory());
     }
 
     @Bean
     @RequestScope
-    public StoreService storeService(){
-        return new StoreService();
+    public StoreService storeService() throws Exception {
+        return new StoreService(hibernateSessionFactory());
     }
 
     @Bean

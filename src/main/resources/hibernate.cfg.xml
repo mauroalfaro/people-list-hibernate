@@ -7,7 +7,7 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/people-list?serverTimezone=UTC</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/people-list</property>
         <property name="connection.username">username</property>
         <property name="connection.password">password</property>
 
