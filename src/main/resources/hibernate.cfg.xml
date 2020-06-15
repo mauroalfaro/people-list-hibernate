@@ -5,10 +5,11 @@
 
 <hibernate-configuration>
     <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <!-- Database connection settings -->
-        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/people-list</property>
-        <property name="connection.username">username</property>
+        <property name="connection.username">root</property>
         <property name="connection.password">password</property>
 
         <!-- SQL dialect -->
@@ -16,10 +17,9 @@
 
         <!-- Validate the database schema on startup -->
         <property name="hbm2ddl.auto">validate</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.generate_statistics">true</property>
+        <property name="entitymanager.packagesToScan">com</property>
 
-        <!-- Names the annotated entity class -->
-        <mapping class="Customer"/>
-        <mapping class="Store"/>
-        <mapping class="Employee"/>
     </session-factory>
 </hibernate-configuration>
