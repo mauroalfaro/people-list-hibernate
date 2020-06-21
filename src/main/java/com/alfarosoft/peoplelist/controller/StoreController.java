@@ -41,7 +41,7 @@ public class StoreController {
         return ResponseEntity.status(HttpStatus.OK).body(storeService.updateStore(id, store));
     }
 
-    @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteStore(@PathVariable String id){
         storeService.removeStore(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Store successfully removed");

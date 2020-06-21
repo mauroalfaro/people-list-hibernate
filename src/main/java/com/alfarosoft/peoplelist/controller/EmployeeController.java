@@ -42,7 +42,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.updateEmployee(id, employee));
     }
 
-    @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/delete/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteEmployee(@PathVariable String id){
         employeeService.removeEmployee(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Employee successfully removed");

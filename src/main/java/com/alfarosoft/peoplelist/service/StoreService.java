@@ -2,8 +2,10 @@ package com.alfarosoft.peoplelist.service;
 
 import com.alfarosoft.peoplelist.database.HibernateSessionFactory;
 import com.alfarosoft.peoplelist.exception.PeopleListException;
+import com.alfarosoft.peoplelist.model.Employee;
 import com.alfarosoft.peoplelist.model.Store;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -17,9 +19,7 @@ public class StoreService {
     }
 
     public Store getStore (String id){
-        storeSession.beginTransaction();
-        Store store = (Store) storeSession.createQuery("SELECT * FROM Stores WHERE Id=" + id).uniqueResult();
-        storeSession.getTransaction().commit();
+        Store store = retrieveStoreFromDatabase(id);
         if(store != null){
             return store;
         } else {
@@ -29,7 +29,8 @@ public class StoreService {
 
     public List<Store> getStores() {
         storeSession.beginTransaction();
-        List<Store> storeList = storeSession.createQuery("from Stores", Store.class).list();
+        List<Store> storeList = storeSession.createQuery("from Store", Store.class).list();
+        storeSession.getTransaction().commit();
         return storeList;
     }
 
@@ -41,8 +42,7 @@ public class StoreService {
     }
 
     public Store updateStore (String id, Store store){
-        Store storeRetrieved = this.getStore(id);
-        storeSession.beginTransaction();
+        Store storeRetrieved = retrieveStoreFromDatabase(id);
         storeRetrieved.setStoreName(store.getStoreName());
         storeRetrieved.setAddress(store.getAddress());
         storeSession.update(storeRetrieved);
@@ -51,8 +51,15 @@ public class StoreService {
     }
 
     public void removeStore (String id){
-        Store storeRetrieved = this.getStore(id);
-        storeSession.delete(storeRetrieved);
+        storeSession.delete(retrieveStoreFromDatabase(id));
         storeSession.getTransaction().commit();
+    }
+
+    private Store retrieveStoreFromDatabase (String id){
+        storeSession.beginTransaction();
+        Query selectQuery = storeSession.createQuery("from Store WHERE Id=:paramId");
+        selectQuery.setParameter("paramId", id);
+        Store storeRetrieved = (Store) selectQuery.uniqueResult();
+        return storeRetrieved;
     }
 }

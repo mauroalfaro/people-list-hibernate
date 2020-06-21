@@ -5,6 +5,7 @@ import com.alfarosoft.peoplelist.exception.PeopleListException;
 import com.alfarosoft.peoplelist.model.Customer;
 import com.alfarosoft.peoplelist.model.Employee;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,7 @@ public class EmployeeService {
     }
 
     public Employee getEmployee(String id){
-        employeeSession.beginTransaction();
-        Employee employee = (Employee) employeeSession.createQuery("SELECT * FROM Employees WHERE Id=" + id).uniqueResult();
-        employeeSession.getTransaction().commit();
+        Employee employee = retrieveEmployeeFromDatabase(id);
         if(employee != null){
             return employee;
         } else {
@@ -31,7 +30,8 @@ public class EmployeeService {
 
     public List<Employee> getEmployees() {
         employeeSession.beginTransaction();
-        List<Employee> employeeList = employeeSession.createQuery("from Employees", Employee.class).list();
+        List<Employee> employeeList = employeeSession.createQuery("from Employee", Employee.class).list();
+        employeeSession.getTransaction().commit();
         return employeeList;
     }
 
@@ -43,8 +43,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee (String id, Employee employee){
-        Employee employeeRetrieved = this.getEmployee(id);
-        employeeSession.beginTransaction();
+        Employee employeeRetrieved = retrieveEmployeeFromDatabase(id);
         employeeRetrieved.setName(employee.getName());
         employeeRetrieved.setSurname(employee.getSurname());
         employeeRetrieved.setAddress(employee.getAddress());
@@ -58,8 +57,15 @@ public class EmployeeService {
     }
 
     public void removeEmployee (String id){
-        Employee employeeRetrieved = this.getEmployee(id);
-        employeeSession.delete(employeeRetrieved);
+        employeeSession.delete(retrieveEmployeeFromDatabase(id));
         employeeSession.getTransaction().commit();
+    }
+
+    private Employee retrieveEmployeeFromDatabase (String id){
+        employeeSession.beginTransaction();
+        Query selectQuery = employeeSession.createQuery("from Employee WHERE Id=:paramId");
+        selectQuery.setParameter("paramId", id);
+        Employee employeeRetrieved = (Employee) selectQuery.uniqueResult();
+        return employeeRetrieved;
     }
 }

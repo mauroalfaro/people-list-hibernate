@@ -4,6 +4,7 @@ import com.alfarosoft.peoplelist.database.HibernateSessionFactory;
 import com.alfarosoft.peoplelist.exception.PeopleListException;
 import com.alfarosoft.peoplelist.model.Customer;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -17,9 +18,7 @@ public class CustomerService {
     }
 
     public Customer getCustomer(String id){
-        customerSession.beginTransaction();
-        Customer customer = (Customer) customerSession.createQuery("SELECT * FROM Customers WHERE Id=" + id).uniqueResult();
-        customerSession.getTransaction().commit();
+        Customer customer = retrieveCustomerFromDatabase(id);
         if(customer != null){
             return customer;
         } else {
@@ -29,7 +28,8 @@ public class CustomerService {
 
     public List<Customer> getCustomers(){
         customerSession.beginTransaction();
-        List<Customer> customers = customerSession.createQuery("from Customers", Customer.class).list();
+        List<Customer> customers = customerSession.createQuery("from Customer", Customer.class).list();
+        customerSession.getTransaction().commit();
         return customers;
     }
 
@@ -41,8 +41,7 @@ public class CustomerService {
     }
 
     public Customer updateCustomer(String id, Customer customer){
-        Customer customerRetrieved = this.getCustomer(id);
-        customerSession.beginTransaction();
+        Customer customerRetrieved = retrieveCustomerFromDatabase(id);
         customerRetrieved.setName(customer.getName());
         customerRetrieved.setSurname(customer.getSurname());
         customerRetrieved.setAddress(customer.getAddress());
@@ -55,8 +54,15 @@ public class CustomerService {
     }
 
     public void removeCustomer (String id){
-        Customer customerRetrieved = this.getCustomer(id);
-        customerSession.delete(customerRetrieved);
+        customerSession.delete(retrieveCustomerFromDatabase(id));
         customerSession.getTransaction().commit();
+    }
+
+    private Customer retrieveCustomerFromDatabase (String id){
+        customerSession.beginTransaction();
+        Query selectQuery = customerSession.createQuery("from Customer WHERE Id=:paramId");
+        selectQuery.setParameter("paramId", id);
+        Customer customerRetrieved = (Customer) selectQuery.uniqueResult();
+        return customerRetrieved;
     }
 }
