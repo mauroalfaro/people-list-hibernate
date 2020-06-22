@@ -23,6 +23,8 @@
         <springboot-test-autoconfigure-version>2.2.6.RELEASE</springboot-test-autoconfigure-version>
         <spring-test-version>5.2.5.RELEASE</spring-test-version>
         <commons-io-version>2.5</commons-io-version>
+        <openapi-doc-version>1.2.32</openapi-doc-version>
+        <swagger-annotations-version>2.1.1</swagger-annotations-version>
      </properties>
 
     <dependencies>
@@ -86,6 +88,16 @@
             <artifactId>commons-io</artifactId>
             <version>${commons-io-version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${openapi-doc-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations-version}</version>
         </dependency>
     </dependencies>
 
