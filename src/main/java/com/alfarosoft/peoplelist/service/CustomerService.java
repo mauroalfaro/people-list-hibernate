@@ -6,6 +6,7 @@ import com.alfarosoft.peoplelist.model.Customer;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public class CustomerService {
@@ -18,12 +19,7 @@ public class CustomerService {
     }
 
     public Customer getCustomer(String id){
-        Customer customer = retrieveCustomerFromDatabase(id);
-        if(customer != null){
-            return customer;
-        } else {
-            throw new PeopleListException("Customer with id " + id + " was not found");
-        }
+        return retrieveCustomerFromDatabase(id);
     }
 
     public List<Customer> getCustomers(){
@@ -59,10 +55,15 @@ public class CustomerService {
     }
 
     private Customer retrieveCustomerFromDatabase (String id){
-        customerSession.beginTransaction();
-        Query selectQuery = customerSession.createQuery("from Customer WHERE Id=:paramId");
-        selectQuery.setParameter("paramId", id);
-        Customer customerRetrieved = (Customer) selectQuery.uniqueResult();
-        return customerRetrieved;
+        Customer customerRetrieved;
+        try{
+            customerSession.beginTransaction();
+            Query selectQuery = customerSession.createQuery("from Customer WHERE Id=:paramId");
+            selectQuery.setParameter("paramId", id);
+            customerRetrieved = (Customer) selectQuery.uniqueResult();
+            return customerRetrieved;
+        } catch (EntityNotFoundException e){
+            throw new PeopleListException("Customer with id " + id + " was not found", 404);
+        }
     }
 }

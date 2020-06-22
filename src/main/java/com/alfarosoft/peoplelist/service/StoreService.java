@@ -7,6 +7,7 @@ import com.alfarosoft.peoplelist.model.Store;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public class StoreService {
@@ -19,12 +20,7 @@ public class StoreService {
     }
 
     public Store getStore (String id){
-        Store store = retrieveStoreFromDatabase(id);
-        if(store != null){
-            return store;
-        } else {
-            throw new PeopleListException("Store with id " + id + " was not found");
-        }
+        return retrieveStoreFromDatabase(id);
     }
 
     public List<Store> getStores() {
@@ -56,10 +52,15 @@ public class StoreService {
     }
 
     private Store retrieveStoreFromDatabase (String id){
-        storeSession.beginTransaction();
-        Query selectQuery = storeSession.createQuery("from Store WHERE Id=:paramId");
-        selectQuery.setParameter("paramId", id);
-        Store storeRetrieved = (Store) selectQuery.uniqueResult();
-        return storeRetrieved;
+        Store storeRetrieved;
+        try {
+            storeSession.beginTransaction();
+            Query selectQuery = storeSession.createQuery("from Store WHERE Id=:paramId");
+            selectQuery.setParameter("paramId", id);
+            storeRetrieved = (Store) selectQuery.uniqueResult();
+            return storeRetrieved;
+        } catch (EntityNotFoundException e){
+            throw new PeopleListException("Employee with id " + id + " was not found", 404);
+        }
     }
 }

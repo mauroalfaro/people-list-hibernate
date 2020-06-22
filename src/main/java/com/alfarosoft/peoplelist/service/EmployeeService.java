@@ -7,6 +7,7 @@ import com.alfarosoft.peoplelist.model.Employee;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,12 +21,7 @@ public class EmployeeService {
     }
 
     public Employee getEmployee(String id){
-        Employee employee = retrieveEmployeeFromDatabase(id);
-        if(employee != null){
-            return employee;
-        } else {
-            throw new PeopleListException("Employee with id " + id + " was not found");
-        }
+        return retrieveEmployeeFromDatabase(id);
     }
 
     public List<Employee> getEmployees() {
@@ -62,10 +58,15 @@ public class EmployeeService {
     }
 
     private Employee retrieveEmployeeFromDatabase (String id){
-        employeeSession.beginTransaction();
-        Query selectQuery = employeeSession.createQuery("from Employee WHERE Id=:paramId");
-        selectQuery.setParameter("paramId", id);
-        Employee employeeRetrieved = (Employee) selectQuery.uniqueResult();
-        return employeeRetrieved;
+        Employee employeeRetrieved;
+        try{
+            employeeSession.beginTransaction();
+            Query selectQuery = employeeSession.createQuery("from Employee WHERE Id=:paramId");
+            selectQuery.setParameter("paramId", id);
+            employeeRetrieved = (Employee) selectQuery.uniqueResult();
+            return employeeRetrieved;
+        } catch (EntityNotFoundException e){
+            throw new PeopleListException("Employee with id " + id + " was not found", 404);
+        }
     }
 }
