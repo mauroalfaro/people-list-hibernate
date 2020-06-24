@@ -1,19 +1,21 @@
 package com.alfarosoft.peoplelist.controller;
 
 import com.alfarosoft.peoplelist.exception.PeopleListException;
-import com.alfarosoft.peoplelist.model.Customer;
 import com.alfarosoft.peoplelist.model.Employee;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.alfarosoft.peoplelist.service.EmployeeService;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static net.logstash.logback.argument.StructuredArguments.keyValue;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     public EmployeeController(EmployeeService employeeService) {
@@ -39,6 +42,7 @@ public class EmployeeController {
                     content = @Content)})
     @PostMapping(value = "/add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> addEmployee (@RequestBody Employee employee){
+        LOG.info("Incoming add request from EmployeeController", keyValue("requestBody", employee));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(employeeService.addEmployee(employee));
     }
 
@@ -53,6 +57,7 @@ public class EmployeeController {
                     content = @Content)})
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Employee> lookupEmployee (@PathVariable String id){
+        LOG.info("Incoming lookup request from EmployeeController", keyValue("requestId", id));
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.getEmployee(id));
     }
 
@@ -67,6 +72,7 @@ public class EmployeeController {
                     content = @Content)})
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Employee>> searchEmployees(){
+        LOG.info("Incoming search request from EmployeeController");
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.getEmployees());
     }
 
@@ -81,6 +87,7 @@ public class EmployeeController {
                     content = @Content)})
     @PutMapping(value = "/update/{id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Employee> updateEmployee (@PathVariable String id, @RequestBody Employee employee){
+        LOG.info("Incoming update request from EmployeeController", keyValue("requestBody", employee));
         return ResponseEntity.status(HttpStatus.OK).body(employeeService.updateEmployee(id, employee));
     }
 
@@ -95,6 +102,7 @@ public class EmployeeController {
                     content = @Content)})
     @DeleteMapping(value = "/delete/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteEmployee(@PathVariable String id){
+        LOG.info("Incoming delete request from CustomerController", keyValue("requestId", id));
         employeeService.removeEmployee(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Employee successfully removed");
     }

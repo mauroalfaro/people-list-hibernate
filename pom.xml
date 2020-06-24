@@ -25,6 +25,7 @@
         <commons-io-version>2.5</commons-io-version>
         <openapi-doc-version>1.2.32</openapi-doc-version>
         <swagger-annotations-version>2.1.1</swagger-annotations-version>
+        <logstash-logback-version>5.2</logstash-logback-version>
      </properties>
 
     <dependencies>
@@ -98,6 +99,11 @@
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger-annotations-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-version}</version>
         </dependency>
     </dependencies>
 

@@ -1,19 +1,21 @@
 package com.alfarosoft.peoplelist.controller;
 
 import com.alfarosoft.peoplelist.exception.PeopleListException;
-import com.alfarosoft.peoplelist.model.Employee;
 import com.alfarosoft.peoplelist.model.Store;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.alfarosoft.peoplelist.service.StoreService;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static net.logstash.logback.argument.StructuredArguments.keyValue;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ import java.util.List;
 @RequestMapping(value = "/services/stores")
 public class StoreController {
     private final StoreService storeService;
+    private static final Logger LOG = LoggerFactory.getLogger(StoreController.class);
 
     @Autowired
     public StoreController(StoreService storeService) {
@@ -38,6 +41,7 @@ public class StoreController {
                     content = @Content)})
     @PostMapping(value = "/add", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Store> addStore(@RequestBody Store store){
+        LOG.info("Incoming add request from StoreController", keyValue("requestBody", store));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(storeService.addStore(store));
     }
 
@@ -52,6 +56,7 @@ public class StoreController {
                     content = @Content)})
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Store> lookupStore (@PathVariable String id){
+        LOG.info("Incoming lookup request from StoreController", keyValue("requestId", id));
         return ResponseEntity.status(HttpStatus.OK).body(storeService.getStore(id));
     }
 
@@ -66,6 +71,7 @@ public class StoreController {
                     content = @Content)})
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Store>> searchStores(){
+        LOG.info("Incoming search request from StoreController");
         return ResponseEntity.status(HttpStatus.OK).body(storeService.getStores());
     }
 
@@ -80,6 +86,7 @@ public class StoreController {
                     content = @Content)})
     @PutMapping(value = "/update/{id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<Store> updateStore (@PathVariable String id, @RequestBody Store store){
+        LOG.info("Incoming update request from StoreController", keyValue("requestBody", store));
         return ResponseEntity.status(HttpStatus.OK).body(storeService.updateStore(id, store));
     }
 
@@ -94,6 +101,7 @@ public class StoreController {
                     content = @Content)})
     @DeleteMapping(value = "/delete/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteStore(@PathVariable String id){
+        LOG.info("Incoming delete request from StoreController", keyValue("requestId", id));
         storeService.removeStore(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Store successfully removed");
     }

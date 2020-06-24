@@ -2,18 +2,21 @@ package com.alfarosoft.peoplelist.service;
 
 import com.alfarosoft.peoplelist.database.HibernateSessionFactory;
 import com.alfarosoft.peoplelist.exception.PeopleListException;
-import com.alfarosoft.peoplelist.model.Customer;
 import com.alfarosoft.peoplelist.model.Employee;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
+
+import static net.logstash.logback.argument.StructuredArguments.keyValue;
 
 public class EmployeeService {
     private HibernateSessionFactory hibernateSessionFactory;
     private Session employeeSession;
+    private static final Logger LOG = LoggerFactory.getLogger(EmployeeService.class);
 
     public EmployeeService(HibernateSessionFactory hibernateSessionFactory) throws Exception {
         this.hibernateSessionFactory = hibernateSessionFactory;
@@ -28,6 +31,7 @@ public class EmployeeService {
         employeeSession.beginTransaction();
         List<Employee> employeeList = employeeSession.createQuery("from Employee", Employee.class).list();
         employeeSession.getTransaction().commit();
+        LOG.info("Employees returned");
         return employeeList;
     }
 
@@ -35,6 +39,7 @@ public class EmployeeService {
         employeeSession.beginTransaction();
         employeeSession.save(employee);
         employeeSession.getTransaction().commit();
+        LOG.info("Employee created");
         return employee;
     }
 
@@ -49,12 +54,14 @@ public class EmployeeService {
         employeeRetrieved.setActiveEmployee(employee.isActiveEmployee());
         employeeSession.update(employeeRetrieved);
         employeeSession.getTransaction().commit();
+        LOG.info("Employee updated");
         return employeeRetrieved;
     }
 
     public void removeEmployee (String id){
         employeeSession.delete(retrieveEmployeeFromDatabase(id));
         employeeSession.getTransaction().commit();
+        LOG.info("Employee removed");
     }
 
     private Employee retrieveEmployeeFromDatabase (String id){
@@ -64,8 +71,10 @@ public class EmployeeService {
             Query selectQuery = employeeSession.createQuery("from Employee WHERE Id=:paramId");
             selectQuery.setParameter("paramId", id);
             employeeRetrieved = (Employee) selectQuery.uniqueResult();
+            LOG.info("Employee retrieved", keyValue("employeeRetrieved" , employeeRetrieved));
             return employeeRetrieved;
         } catch (EntityNotFoundException e){
+            LOG.error("Employee not found", keyValue("employeeIdInError", id));
             throw new PeopleListException("Employee with id " + id + " was not found", 404);
         }
     }
