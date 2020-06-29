@@ -12,4 +12,4 @@ Includes:
 - Java 8 lambdas
 - Hibernate framework for data persisting
 
-You should be running a MySQL server in your local to test this. Hibernate config is pointing to the default port. Create tables scripts are located in the resources folder.
+You should be running a MySQL server in your local to test this. Hibernate config is pointing to the default port. Create tables scripts are located in the resources folder. If you want to use the default config, the database should be named people-list-db.
