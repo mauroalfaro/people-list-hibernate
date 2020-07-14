@@ -31,7 +31,7 @@ To build the app without tests, run:
 
 And then execute
 ```bash
-java -jar people-list-docker/target/people-list-hibernate-1.0-RELEASE.jar
+java -jar people-list-hibernate/target/people-list-hibernate-1.0-RELEASE.jar
 ```
 
 The API provides endpoints for the three models available: Customers, Employees and Stores. Providing CRUD operations.
