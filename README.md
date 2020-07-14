@@ -12,7 +12,7 @@ Includes:
 - Spring Boot Test
 - Mockito for MVC unit testing
 - Java 8 lambdas
-- Docker compose for MySQL database image
+- Hibernate framework for data 
 - OpenApi UI to test the app
 
 ## Using the app
