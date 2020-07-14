@@ -6,7 +6,7 @@
 
     <groupId>com.alfarosoft.people-list-hibernate</groupId>
     <artifactId>people-list-hibernate</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-RELEASE</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
