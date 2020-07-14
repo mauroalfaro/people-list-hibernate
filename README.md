@@ -17,6 +17,7 @@ Includes:
 
 ## Using the app
 In order to test the app, first you have to start up a MySQL instance on your local. You can do it using XAMPP which is the simplest way. You can follow these tutorials:
+
 https://blog.templatetoaster.com/xampp-phpmyadmin/ (EN)
 https://www.ionos.es/digitalguide/servidores/herramientas/instala-tu-servidor-local-xampp-en-unos-pocos-pasos/ (ES)
 
