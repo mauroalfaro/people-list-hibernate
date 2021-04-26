@@ -22,7 +22,7 @@
         <springboot-test-version>2.2.6.RELEASE</springboot-test-version>
         <springboot-test-autoconfigure-version>2.2.6.RELEASE</springboot-test-autoconfigure-version>
         <spring-test-version>5.2.5.RELEASE</spring-test-version>
-        <commons-io-version>2.5</commons-io-version>
+        <commons-io-version>2.7</commons-io-version>
         <openapi-doc-version>1.2.32</openapi-doc-version>
         <swagger-annotations-version>2.1.1</swagger-annotations-version>
         <logstash-logback-version>5.2</logstash-logback-version>
