@@ -17,7 +17,7 @@
         <hibernate-core-version>5.4.10.Final</hibernate-core-version>
         <mysql-connector-version>8.0.16</mysql-connector-version>
         <spring-web-version>5.2.6.RELEASE</spring-web-version>
-        <springboot-web-starter-version>2.3.0.RELEASE</springboot-web-starter-version>
+        <springboot-web-starter-version>2.5.12</springboot-web-starter-version>
         <springboot-starter-test-version>2.3.0.RELEASE</springboot-starter-test-version>
         <springboot-test-version>2.2.6.RELEASE</springboot-test-version>
         <springboot-test-autoconfigure-version>2.2.6.RELEASE</springboot-test-autoconfigure-version>
